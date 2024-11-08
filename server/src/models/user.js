@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model } from 'mongoose';
 
 const UserSchema = new Schema(
   {
@@ -7,7 +7,7 @@ const UserSchema = new Schema(
     following: {
       type: [
         {
-          username: { type: String, unique: true },
+          username: { type: String },
           followingSince: { type: Date, default: Date.now },
         },
       ],
@@ -15,9 +15,9 @@ const UserSchema = new Schema(
     },
     posts: { type: Number, default: 0 },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-const User = model("User", UserSchema);
+const User = model('User', UserSchema);
 
 export default User;
