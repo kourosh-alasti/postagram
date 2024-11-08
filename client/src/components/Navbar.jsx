@@ -1,6 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    Cookies.remove('postagramToken');
+    Cookies.remove('username');
+
+    navigate('/auth/sign-in');
+  }
+
   return (
     <header className="container mt-4 flex flex-row items-center justify-between rounded-md border px-4 py-2">
       <Link to="/">
@@ -23,11 +33,9 @@ const Navbar = () => {
             Profile
           </li>
         </Link>
-        <Link to="/auth/sign-up">
-          <button className="rounded-md border border-slate-400 bg-indigo-500 px-4 py-2">
-            Sign Up
-          </button>
-        </Link>
+        <button className="rounded-md border border-slate-400 bg-indigo-500 px-4 py-2" onClick={handleLogout}>
+          Sign Out
+        </button>
       </ul>
     </header>
   );
