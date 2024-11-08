@@ -37,6 +37,34 @@ export const getUser = async (req, res) => {
   }
 };
 
+export const getSelf = async (req, res) => {
+  const username = getCookie(req)
+    .find((cookie) => cookie.startsWith('username'))
+    .split('=')[1];
+
+  try {
+    if (!username) {
+      return res.status(404).json({
+        error: { message: 'Username is required.', isAuthenticated: false },
+      });
+    }
+
+    const result = await getUserByUsername(username);
+    const { password, ...user } = result._doc;
+
+    return res.status(200).json({ user });
+  } catch (error) {
+    console.error('Unexpected error while trying to fetch your information');
+    console.error(error);
+    return res.status(500).json({
+      error: {
+        message:
+          'Error occured while fetching your data. Please try again later',
+      },
+    });
+  }
+};
+
 export const getAllUsers = async (req, res) => {
   try {
     const users = await getUsers();
