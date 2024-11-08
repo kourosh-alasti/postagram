@@ -14,7 +14,7 @@ export const createUser = async ({ username, password }) => {
 
 export const getUserByUsername = async (username) => {
   try {
-    const fetchedUser = await User.find({ username });
+    const fetchedUser = await User.findOne({ username });
     return fetchedUser;
   } catch (error) {
     console.error('Error while getting user');
@@ -52,6 +52,20 @@ export const addFollow = async ({ username, toFollow }) => {
   }
 };
 
+export const getFollowing = async ({ username }) => {
+  try {
+    const fetchedUser = await User.findOne({ username });
+
+    const following = fetchedUser.following;
+
+    return following;
+  } catch (error) {
+    console.error('Error while getting following');
+    console.error(error);
+    throw new Error(error);
+  }
+};
+
 export const removeFollow = async ({ username, toUnfollow }) => {
   try {
     const fetchedUser = await User.updateOne(
@@ -72,6 +86,25 @@ export const deleteAllUsers = async () => {
     await User.deleteMany({});
   } catch (error) {
     console.error('Error Deleting Users');
+    console.error(error);
+    throw new Error(error);
+  }
+};
+
+export const checkIfFollowing = async ({ username, toFollow }) => {
+  try {
+    const fetchedUser = await User.findOne({ username });
+    const { following } = fetchedUser;
+
+    if (
+      following.find((followingUser) => followingUser.username === toFollow)
+    ) {
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    console.error('Error while checking if user is following');
     console.error(error);
     throw new Error(error);
   }
