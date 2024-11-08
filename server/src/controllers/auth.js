@@ -7,7 +7,9 @@ export const signup = async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
-    return res.status(400).json({ message: 'Please provide username and password.' });
+    return res
+      .status(400)
+      .json({ error: { message: 'Please provide username and password.' } });
   }
 
   try {
@@ -18,12 +20,24 @@ export const signup = async (req, res) => {
 
     const token = generateToken(newUser.username);
 
-    return res.status(200).cookie('postagramToken', token, { signed: true }).json({ message: 'User created successfully' });
+    return res
+      .status(200)
+      .cookie('postagramToken', token, {
+        httpOnly: false,
+        secure: true,
+        sameSite: 'none',
+        path: '/',
+        domain: 'localhost',
+      })
+      .cookie('username', username)
+      .json({ message: 'User created successfully' });
   } catch (error) {
     console.error('Something went wrong during signup');
     console.error(error);
 
-    return res.status(500).json({ message: 'Something went wrong. Please try again later.' });
+    return res.status(500).json({
+      error: { message: 'Something went wrong. Please try again later.' },
+    });
   }
 };
 
@@ -31,25 +45,46 @@ export const signin = async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
-    return res.status(400).json({ message: 'Please provide username and password.' });
+    return res
+      .status(400)
+      .json({ error: { message: 'Please provide username and password.' } });
   }
 
   try {
     const user = await getUserByUsername(username);
-    const hashedPassword = user[0].password;
+    const hashedPassword = user.password;
 
     const isValidPassword = await bcrypt.compare(password, hashedPassword);
 
     if (!isValidPassword) {
-      return res.status(404).json({ message: 'Invalid username or password.' });
+      return res
+        .status(404)
+        .json({ error: { message: 'Invalid username or password.' } });
     }
 
     const token = generateToken(username);
-    return res.status(200).cookie('postagramToken', token).cookie('username', username).json({ message: 'User signed in successfully' });
+    return res
+      .status(200)
+      .cookie('postagramToken', token, {
+        httpOnly: false,
+        secure: true,
+        sameSite: 'none',
+        path: '/',
+        domain: 'localhost',
+      })
+      .cookie('username', username)
+      .json({ message: 'User signed in successfully' });
   } catch (error) {
     console.error('Something went wrong during signin');
     console.error(error);
 
-    return res.status(500).json({ message: 'Something went wrong. Please try again later.' });
+    return res.status(500).json({
+      error: { message: 'Something went wrong. Please try again later.' },
+    });
   }
+};
+
+export const getToken = async (req, res) => {
+  console.log('Check if authenticated');
+  return res.status(200).json({ isAuthenticated: true });
 };
