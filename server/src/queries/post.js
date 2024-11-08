@@ -1,7 +1,9 @@
-import Post from "../models/post";
-import User from "../models/user";
+import Post from '../models/post.js';
+import User from '../models/user.js';
 
-export const createPost = async ({ title, content, username, tags }) => {
+export const createPost = async ({
+  title, content, username, tags,
+}) => {
   try {
     const newPost = await Post.create({
       title,
@@ -14,8 +16,9 @@ export const createPost = async ({ title, content, username, tags }) => {
 
     return newPost;
   } catch (error) {
-    console.error("Error Creating Post");
+    console.error('Error Creating Post');
     console.error(error);
+    throw new Error(error);
   }
 };
 
@@ -31,8 +34,9 @@ export const getPostsByUsername = async ({
 
     return fetchedPosts;
   } catch (error) {
-    console.error("Error finding posts by username");
+    console.error('Error finding posts by username');
     console.error(error);
+    throw new Error(error);
   }
 };
 
@@ -44,8 +48,9 @@ export const getPostsByTag = async ({ tag, limit = 10, offset = 0 }) => {
 
     return fetchedPosts;
   } catch (error) {
-    console.error("Error finding posts by Tag");
+    console.error('Error finding posts by Tag');
     console.error(error);
+    throw new Error(error);
   }
 };
 
@@ -62,8 +67,9 @@ export const getPostsForFeed = async ({ username, limit = 10, offset = 0 }) => {
 
     return fetchedPosts;
   } catch (error) {
-    console.error("Error occured finding Posts for feed");
+    console.error('Error occured finding Posts for feed');
     console.error(error);
+    throw new Error(error);
   }
 };
 
@@ -76,6 +82,7 @@ export const deletePostById = async (id) => {
   } catch (error) {
     console.error(`Error occured while deleting post: ${id}`);
     console.error(error);
+    throw new Error(error);
   }
 };
 
@@ -84,7 +91,8 @@ export const deleteAllPosts = async () => {
     const res = await Post.deleteMany({});
     return res;
   } catch (error) {
-    console.error("Error while deleting all posts");
+    console.error('Error while deleting all posts');
     console.error(error);
+    throw new Error(error);
   }
 };

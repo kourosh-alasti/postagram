@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model } from 'mongoose';
 
 const PostSchema = new Schema(
   {
@@ -12,11 +12,11 @@ const PostSchema = new Schema(
         },
       ],
     },
-    tags: { type: [String], default: [""] },
+    tags: { type: [String], default: [''] },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-const Post = model("Post", PostSchema);
+const Post = model('Post', PostSchema);
 
 export default Post;
