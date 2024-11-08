@@ -1,9 +1,7 @@
 import Post from '../models/post.js';
 import User from '../models/user.js';
 
-export const createPost = async ({
-  title, content, username, tags,
-}) => {
+export const createPost = async ({ title, content, username, tags }) => {
   try {
     const newPost = await Post.create({
       title,
@@ -57,10 +55,17 @@ export const getPostsByTag = async ({ tag, limit = 10, offset = 0 }) => {
 export const getPostsForFeed = async ({ username, limit = 10, offset = 0 }) => {
   try {
     const user = await User.findOne({ username });
-    const userFollows = await user.following;
+
+    const { following } = user;
+
+    const userFollows = following.map((u) => {
+      const { username: uname } = u;
+
+      return uname;
+    });
 
     const fetchedPosts = await Post.find({
-      username: { $in: userFollows.username },
+      username: { $in: userFollows },
     })
       .skip(offset)
       .limit(limit);
@@ -68,6 +73,43 @@ export const getPostsForFeed = async ({ username, limit = 10, offset = 0 }) => {
     return fetchedPosts;
   } catch (error) {
     console.error('Error occured finding Posts for feed');
+    console.error(error);
+    throw new Error(error);
+  }
+};
+
+export const updateLike = async ({ id, val, username }) => {
+  try {
+    const action =
+      val > 0
+        ? { $addToSet: { likes: { username } } }
+        : { $pull: { likes: { username } } };
+
+    const updated = await Post.findOneAndUpdate({ _id: id }, action, {
+      new: true,
+    });
+
+    return updated;
+  } catch (error) {
+    console.error('Error occured while updating likes');
+    console.error(error);
+    throw new Error(error);
+  }
+};
+
+export const getPostsBySearchString = async ({ searchString }) => {
+  try {
+    const results = await Post.find({
+      $or: [
+        { title: { $regex: searchString, $options: 'i' } },
+        { content: { $regex: searchString, $options: 'i' } },
+        { tags: { $regex: searchString, $options: 'i' } },
+      ],
+    });
+
+    return results;
+  } catch (error) {
+    console.error('Error occurred while searching for posts.');
     console.error(error);
     throw new Error(error);
   }
