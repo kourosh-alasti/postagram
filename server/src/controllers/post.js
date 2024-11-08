@@ -3,6 +3,7 @@ import {
   getPostsForFeed,
   updateLike,
   getPostsBySearchString,
+  getPostsByUsername,
 } from '../queries/post.js';
 import getCookie from '../utils/cookie.js';
 
@@ -139,6 +140,59 @@ export const getPostsBySearch = async (req, res) => {
     console.error(error);
     return res.status(500).json({
       error: { message: 'An error occured while searching for posts' },
+    });
+  }
+};
+
+export const getSelfPosts = async (req, res) => {
+  const username = getCookie(req)
+    .find((cookie) => cookie.startsWith('username'))
+    .split('=')[1];
+
+  try {
+    if (!username) {
+      return res.status(401).json({
+        error: {
+          message: 'Unauthorized to create new post',
+          isAuthorized: false,
+        },
+      });
+    }
+
+    const posts = await getPostsByUsername({ username });
+
+    return res.status(200).json({ posts });
+  } catch (error) {
+    console.error('Unexpected error occured while trying to fetch your posts');
+    console.error(error);
+    return res.status(500).json({
+      error: {
+        message:
+          'An unexpected error occured while tryingto fetch your posts. Please try again later.',
+      },
+    });
+  }
+};
+
+export const getUserPostsByUsername = async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    if (!username) {
+      return res.status(404).json({ error: { message: 'Must be a profile' } });
+    }
+
+    const posts = await getPostsByUsername({ username });
+
+    return res.status(200).json({ posts });
+  } catch (error) {
+    console.error('Unexpected error occured while trying to fetch your posts');
+    console.error(error);
+    return res.status(500).json({
+      error: {
+        message:
+          'An unexpected error occured while tryingto fetch your posts. Please try again later.',
+      },
     });
   }
 };
