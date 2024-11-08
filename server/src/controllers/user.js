@@ -1,61 +1,84 @@
-import User from "../models/user";
+import {
+  getUserByUsername, getUsers, addFollow, removeFollow,
+} from '../queries/user.js';
+import getCookie from '../utils/cookie.js';
 
-export const createUser = async ({ username, password }) => {
+export const getUser = async (req, res) => {
+  const { username } = req.params;
+
   try {
-    const newUser = await User.create({ username, password });
+    if (!username) {
+      return res.status(404).json({ message: 'Username is required.' });
+    }
 
-    return newUser;
+    const user = await getUserByUsername(username);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    const { password, ...rest } = user[0]._doc;
+
+    return res.status(200).json(rest);
   } catch (error) {
-    console.error("Error occured while creating new user");
+    console.error('Something went wrong while fetching user');
     console.error(error);
+
+    return res.status(500).json({ message: 'Something went wrong. Please try again later.' });
   }
 };
 
-export const getUserByUsername = async (username) => {
+export const getAllUsers = async (req, res) => {
   try {
-    const fetchedUser = await User.find({ username });
-    return fetchedUser;
+    const users = await getUsers();
+
+    return res.status(200).json(users);
   } catch (error) {
-    console.error("Error while getting user");
+    console.error('Something went wrong while fetching users');
     console.error(error);
+
+    return res.status(500).json({ message: 'Something went wrong. Please try again later.' });
   }
 };
 
-export const addFollow = async ({ username, toFollow }) => {
-  try {
-    const fetchedUser = await User.updateOne(
-      {
-        username,
-      },
-      { $push: { username: toFollow } }
-    );
+export const createNewFollow = async (req, res) => {
+  const { username: toFollow } = req.params;
+  const username = getCookie(req).find((cookie) => cookie.startsWith('username')).split('=')[1];
 
-    return fetchedUser;
+  console.log(toFollow, username);
+
+  try {
+    if (!toFollow || !username) {
+      return res.status(400).json({ message: 'Please provide username and userto follow.' });
+    }
+
+    const user = await addFollow({ username, toFollow });
+
+    return res.status(200).json(user);
   } catch (error) {
-    console.error(`Error while following ${toFollow}`);
+    console.error('Something went wrong while following');
     console.error(error);
+
+    return res.status(500).json({ message: 'Something went wrong. Please try again later.' });
   }
 };
 
-export const removeFollow = async ({ username, toFollow }) => {
-  try {
-    const fetchedUser = await User.updateOne(
-      { username },
-      { $pull: { username: toFollow } }
-    );
+export const removeNewFollow = async (req, res) => {
+  const { username: toUnfollow } = req.params;
+  const username = getCookie(req).find((cookie) => cookie.startsWith('username')).split('=')[1];
 
-    return fetchedUser;
-  } catch (error) {
-    console.error(`Error while unfollowing ${toFollow}`);
-    console.error(error);
-  }
-};
-
-export const deleteAllUsers = async () => {
   try {
-    await User.deleteMany({});
+    if (!toUnfollow || !username) {
+      return res.status(400).json({ message: 'Please provide username and user to unfollow.' });
+    }
+
+    const user = await removeFollow({ username, toUnfollow });
+
+    return res.status(200).json(user);
   } catch (error) {
-    console.error("Error Deleting Users");
+    console.error('Something went wrong while unfollowing');
     console.error(error);
+
+    return res.status(500).json({ message: 'Something went wrong. Please try again later.' });
   }
 };
