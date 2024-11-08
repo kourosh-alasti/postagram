@@ -8,7 +8,7 @@ const PostSchema = new Schema(
     likes: {
       type: [
         {
-          username: { type: String, required: true, unique: true },
+          username: { type: String, required: true },
         },
       ],
     },
