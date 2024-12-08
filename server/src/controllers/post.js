@@ -4,6 +4,7 @@ import {
   updateLike,
   getPostsBySearchString,
   getPostsByUsername,
+  deletePostById,
 } from '../queries/post.js';
 import getCookie from '../utils/cookie.js';
 
@@ -51,7 +52,7 @@ export const createNewPost = async (req, res) => {
   }
 };
 
-export const updateNewPost = async (req, res) => {};
+// export const updateNewPost = async (req, res) => {};
 
 export const getFeedPosts = async (req, res) => {
   const username = getCookie(req)
@@ -192,6 +193,29 @@ export const getUserPostsByUsername = async (req, res) => {
       error: {
         message:
           'An unexpected error occured while tryingto fetch your posts. Please try again later.',
+      },
+    });
+  }
+};
+
+export const deleteUserPostById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    if (!id) {
+      return res.status(404).json({ error: { message: 'Must be a valid ID' } });
+    }
+
+    await deletePostById(id);
+
+    return res.status(200).json({ message: 'Successfully delete Post' });
+  } catch (error) {
+    console.error('Unexpected error occured while trying to delete your post');
+    console.error(error);
+    return res.status(500).json({
+      error: {
+        message:
+          'An unexpected error occured while trying to delete your post. Please try again later.',
       },
     });
   }

@@ -6,6 +6,7 @@ import {
   getSelfPosts,
   getUserPostsByUsername,
   updateLikes,
+  deleteUserPostById,
 } from '../controllers/post.js';
 import validateUser from '../middlewares/validateUser.js';
 
@@ -17,9 +18,9 @@ router.put('/', validateUser, updateLikes);
 router.get('/self', validateUser, getSelfPosts);
 router.get('/search', validateUser, getPostsBySearch);
 router.get('/u/:username', validateUser, getUserPostsByUsername);
+router.delete('/:id', validateUser, deleteUserPostById);
 // router.get('/tags/:tag');
 // router.get('/:postId');
 // router.put('/:postId');
-// router.delete('/:postId');
 
 export default router;
