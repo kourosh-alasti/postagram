@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+import { nanoid } from "nanoid";
 
 const FollowingSection = () => {
   const [friends, setFriends] = useState([]);
@@ -39,7 +40,7 @@ const FollowingSection = () => {
             const date = new Date(friend.followingSince);
 
             return (
-              <div key={`${friend._id}`}>
+              <div key={`${friend._id}-${nanoid()}`}>
                 <div className="flex flex-col">
                   <div className="flex flex-row items-center justify-between">
                     <Link to={`/profile/${friend.username}`} className="group">
