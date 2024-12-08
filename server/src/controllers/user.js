@@ -99,15 +99,10 @@ export const getMyFollowing = async (req, res) => {
     }
 
     const following = await Promise.all(
-      fetchedFollowing.map(async (user) => {
-        const result = await getUserByUsername(user.username);
-        const { password, ...rest } = result._doc;
-
-        return {
-          followingSince: user.followingSince,
-          ...rest,
-        };
-      }),
+      fetchedFollowing.map(async (user) => ({
+        followingSince: user.followingSince,
+        username: user.username,
+      })),
     );
 
     return res.status(200).json({ following });
@@ -142,6 +137,7 @@ export const createNewFollow = async (req, res) => {
     }
 
     const user = await addFollow({ username, toFollow });
+    console.log('Successfully Followed');
 
     return res.status(200).json(user);
   } catch (error) {
