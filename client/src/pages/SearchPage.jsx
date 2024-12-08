@@ -34,7 +34,8 @@ const SearchPage = () => {
     } else {
       setResults([]);
     }
-  }, [searchText, fetchResults]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchText]);
 
   return (
     <main className="container flex min-h-full flex-col items-center justify-center gap-4">
