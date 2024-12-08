@@ -39,13 +39,20 @@ const FeedSection = () => {
           {posts.length > 0 ? (
             posts.map((post) => {
               const date = new Date(post.createdAt);
+              let tags = [];
+
+              if (post.tags[0] === "") {
+                tags = [];
+              } else {
+                tags = post.tags;
+              }
 
               return (
                 <Post
                   key={`${post._id}-${post.username}-${post.title}`}
                   id={post._id}
                   username={post.username}
-                  tags={post.tags}
+                  tags={tags}
                   date={date}
                   title={post.title}
                   content={post.content}
