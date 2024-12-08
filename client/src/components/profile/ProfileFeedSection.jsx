@@ -35,20 +35,26 @@ const ProfileFeedSection = (props) => {
   return (
     <section className="flex flex-1 flex-col rounded-md border px-4 py-3">
       <div id="feed" className="flex w-full flex-col gap-3">
-        {/* TODO: Make Scrollable */}
         <h3 className="text-xl font-semibold tracking-tight">Your Posts</h3>
 
         <div className="flex w-full flex-col gap-2.5">
           {posts.length > 0 ? (
             posts.map((post) => {
               const date = new Date(post.createdAt);
+              let tags = [];
+
+              if (post.tags[0] === "") {
+                tags = [];
+              } else {
+                tags = post.tags;
+              }
 
               return (
                 <Post
                   key={`${post._id}-${post.username}-${post.title}`}
                   id={post._id}
                   username={post.username}
-                  tags={post.tags}
+                  tags={tags}
                   date={date}
                   title={post.title}
                   content={post.content}

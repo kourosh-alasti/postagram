@@ -34,7 +34,7 @@ const SearchPage = () => {
     } else {
       setResults([]);
     }
-  }, [searchText]);
+  }, [searchText, fetchResults]);
 
   return (
     <main className="container flex min-h-full flex-col items-center justify-center gap-4">
@@ -56,6 +56,13 @@ const SearchPage = () => {
       >
         {results.map((post) => {
           const date = new Date(post.createdAt);
+          let tags = [];
+
+          if (post.tags[0] === "") {
+            tags = [];
+          } else {
+            tags = post.tags;
+          }
 
           return (
             <Post
@@ -64,7 +71,7 @@ const SearchPage = () => {
               username={post.username}
               date={date}
               title={post.title}
-              tags={post.tags}
+              tags={tags || []}
               content={post.content}
               likes={post.likes}
             />

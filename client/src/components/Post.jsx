@@ -8,6 +8,9 @@ import Cookies from "js-cookie";
 const Post = ({ id, username, title, date, content, likes, tags }) => {
   const [totalLikes, setTotalLikes] = useState(likes.length);
   const [liked, setLiked] = useState(false);
+  const [isPost, setIsPost] = useState(false);
+
+  // TODO: Add Delete Post Handler
 
   useEffect(() => {
     const myUsername = Cookies.get("username");
@@ -15,7 +18,8 @@ const Post = ({ id, username, title, date, content, likes, tags }) => {
     const hasLiked = likes.some((like) => like.username === myUsername);
 
     setLiked(hasLiked);
-  }, [likes]);
+    setIsPost(username === myUsername);
+  }, [likes, username]);
 
   const handleLike = () => {
     setLiked((prev) => {
@@ -99,28 +103,33 @@ const Post = ({ id, username, title, date, content, likes, tags }) => {
               {totalLikes === 1 ? "like" : "likes"}
             </p>
           </div>
-          {tags.length > 0 && (
+          {tags.length >= 1 && (
             <div className="flex flex-row flex-wrap gap-1 text-xs md:text-sm">
               <p>Tags: </p>
               {tags.map((tag) => {
-                const key = nanoid();
-
                 return (
-                  <div
-                    className="rounded bg-indigo-400/70 px-1 py-0.5"
-                    key={key}
+                  <p
+                    className="rounded bg-indigo-400/70 px-1 py-0.5 text-center"
+                    key={nanoid()}
                   >
                     {tag}
-                  </div>
+                  </p>
                 );
               })}
             </div>
           )}
         </div>
       </div>
-      <span className="justify-self-end text-sm text-slate-400">
-        {date.toLocaleDateString()}
-      </span>
+      <div className="flex flex-col gap-0.5">
+        <span className="justify-self-end text-sm text-slate-400">
+          {date.toLocaleDateString()}
+        </span>
+        {isPost && (
+          <button className="gap-0.5 rounded bg-red-500 px-2 py-1 text-center text-xs text-white">
+            Delete
+          </button>
+        )}
+      </div>
     </div>
   );
 };
