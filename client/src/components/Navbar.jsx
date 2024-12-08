@@ -1,8 +1,15 @@
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    const uname = Cookies.get("username");
+    setUsername(uname);
+  }, []);
 
   const handleLogout = () => {
     Cookies.remove("postagramToken");
@@ -28,7 +35,7 @@ const Navbar = () => {
             Search
           </li>
         </Link>
-        <Link to="/profile" className="group">
+        <Link to={`/profile/${username}`} className="group">
           <li className="underline-offset-[3.5px] group-hover:underline">
             Profile
           </li>

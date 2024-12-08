@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
 import Post from "../Post";
 import { toast } from "sonner";
+import Cookies from "js-cookie";
 
 const ProfileFeedSection = (props) => {
+  const username = Cookies.get("username");
+  const isSelf = username === props.username;
+
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const getPostsForFeed = async () => {
       const response = await fetch(
-        `http://localhost:8000/api/post/u/${props.username}`,
+        `http://localhost:8000/api/post/${isSelf ? "self" : `u/${props.username}`}`,
         {
           method: "GET",
           credentials: "include",
@@ -30,7 +34,7 @@ const ProfileFeedSection = (props) => {
     };
 
     getPostsForFeed();
-  }, []);
+  }, [props.username, isSelf]);
 
   return (
     <section className="flex flex-1 flex-col rounded-md border px-4 py-3">
