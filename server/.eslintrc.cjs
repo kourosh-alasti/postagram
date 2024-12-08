@@ -22,5 +22,6 @@ module.exports = {
   rules: {
     'import/extensions': ['error', 'always', { ignorePackages: true }],
     'object-curly-newline': 'off',
+    'operator-linebreak': 'off',
   },
 };
