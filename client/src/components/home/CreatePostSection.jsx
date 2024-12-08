@@ -39,6 +39,10 @@ const CreatePostSection = () => {
     };
 
     createPost();
+
+    setPostContent("");
+    setPostTag("");
+    setPostTitle("");
   };
 
   return (

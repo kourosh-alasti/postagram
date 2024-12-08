@@ -56,7 +56,7 @@ export const getFollowing = async ({ username }) => {
   try {
     const fetchedUser = await User.findOne({ username });
 
-    const following = fetchedUser.following;
+    const { following } = fetchedUser;
 
     return following;
   } catch (error) {
