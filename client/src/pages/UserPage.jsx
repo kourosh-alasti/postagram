@@ -5,13 +5,17 @@ import ProfileFeedSection from "../components/profile/ProfileFeedSection";
 import { toast } from "sonner";
 import { useParams } from "react-router-dom";
 import { ArrowUpIcon, Loader2Icon } from "lucide-react";
+import Cookies from "js-cookie";
 
 const UserPage = () => {
+  const cookieUsername = Cookies.get("username");
   const { username } = useParams();
+
+  const isSelf = username === cookieUsername;
 
   const [user, setUser] = useState();
   const [date, setDate] = useState();
-  const [posts, setPosts] = useState([]);
+  const [following, setFollowing] = useState(false);
 
   useEffect(() => {
     const getUserInfo = async () => {
@@ -38,11 +42,42 @@ const UserPage = () => {
       setDate(date.toLocaleDateString());
     };
 
-    const getUserPosts = async () => {
-      const response = await fetch(
-        `http://localhost:8000/api/post/u/${username}`,
+    const getMyFollowingInfo = async () => {
+      const response = await fetch(`http://localhost:8000/api/user/following`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+      console.log(data);
+
+      if (data.error) {
+        return toast.error(data.error.message);
+      }
+
+      setFollowing(data.following.some((el) => el.username === username));
+    };
+
+    getUserInfo();
+
+    if (!isSelf) {
+      getMyFollowingInfo();
+    }
+  }, [username, isSelf]);
+
+  // TODO: Follow Unfollow Handler
+
+  const handleFollowUnfollow = async () => {
+    const shouldUnfollow = following; // If True user Should Unfollow
+
+    try {
+      await fetch(
+        `http://localhost:8000/api/user/${shouldUnfollow ? "unfollow" : "follow"}/${username}`,
         {
-          method: "GET",
+          method: "PUT",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
@@ -50,24 +85,20 @@ const UserPage = () => {
         },
       );
 
-      const data = await response.json();
+      toast.success(
+        `Successfully ${shouldUnfollow ? "unfollowed" : "followed"} ${username}`,
+      );
+    } catch (error) {
+      toast.error(
+        `Error Occured trying to ${shouldUnfollow ? "unfollow" : "follow"} ${username}`,
+        {
+          description: error,
+        },
+      );
+    }
 
-      console.log(data);
-
-      if (data.error) {
-        return toast.error(data.error.message);
-      }
-
-      setPosts(data.posts);
-    };
-
-    const preparePage = async () => {
-      await getUserInfo();
-      await getUserPosts();
-    };
-
-    preparePage();
-  }, []);
+    setFollowing((prev) => !prev);
+  };
 
   return (
     <>
@@ -95,12 +126,27 @@ const UserPage = () => {
                     </span>{" "}
                     user
                   </p>
-                  <p className="text-slate-500">
-                    <span className="font-semibold text-slate-400">
-                      {user.posts}
-                    </span>{" "}
-                    posts
-                  </p>
+
+                  <div className="flex flex-row items-center gap-1">
+                    <p className="text-slate-500">
+                      <span className="font-semibold text-slate-400">
+                        {user.posts}
+                      </span>{" "}
+                      posts
+                    </p>
+                    {!isSelf && (
+                      <button
+                        onClick={handleFollowUnfollow}
+                        className={
+                          following
+                            ? "rounded bg-red-500 px-2 py-1 text-white hover:cursor-pointer"
+                            : "rounded bg-indigo-600 px-2 py-1 text-white hover:cursor-pointer"
+                        }
+                      >
+                        {following ? "Unfollow" : "Follow"}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
 
