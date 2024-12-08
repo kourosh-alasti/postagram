@@ -68,8 +68,6 @@ const UserPage = () => {
     }
   }, [username, isSelf]);
 
-  // TODO: Follow Unfollow Handler
-
   const handleFollowUnfollow = async () => {
     const shouldUnfollow = following; // If True user Should Unfollow
 
