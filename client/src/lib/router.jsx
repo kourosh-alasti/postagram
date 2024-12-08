@@ -6,7 +6,6 @@ import RootLayout from "../layouts/RootLayout";
 import SearchPage from "../pages/SearchPage";
 import MainLayout from "../layouts/MainLayout";
 import AuthLayout from "../layouts/AuthLayout";
-import ProfilePage from "../pages/ProfilePage";
 import UserPage from "../pages/UserPage";
 
 export const router = createBrowserRouter([
@@ -29,10 +28,6 @@ export const router = createBrowserRouter([
           {
             path: "/search",
             element: <SearchPage />,
-          },
-          {
-            path: "/profile/",
-            element: <ProfilePage />,
           },
           {
             path: "/profile/:username",
