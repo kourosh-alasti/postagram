@@ -14,8 +14,6 @@ export const createPost = async ({ title, content, username, tags }) => {
 
     return newPost;
   } catch (error) {
-    console.error('Error Creating Post');
-    console.error(error);
     throw new Error(error);
   }
 };
@@ -115,12 +113,15 @@ export const getPostsBySearchString = async ({ searchString }) => {
   }
 };
 
-// TODO: Add Put Queries
-
 export const deletePostById = async (id) => {
   try {
-    const res = await Post.findByIdAndDelete(id);
-    return res;
+    const { username } = await Post.findByIdAndDelete(id);
+
+    await User.findOneAndUpdate(
+      { username },
+      { $inc: { posts: -1 } },
+      { new: true },
+    );
   } catch (error) {
     console.error(`Error occured while deleting post: ${id}`);
     console.error(error);

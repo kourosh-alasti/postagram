@@ -10,8 +10,6 @@ const Post = ({ id, username, title, date, content, likes, tags }) => {
   const [liked, setLiked] = useState(false);
   const [isPost, setIsPost] = useState(false);
 
-  // TODO: Add Delete Post Handler
-
   useEffect(() => {
     const myUsername = Cookies.get("username");
 
@@ -64,6 +62,23 @@ const Post = ({ id, username, title, date, content, likes, tags }) => {
     }
 
     return true;
+  };
+
+  const deletePostHandler = async () => {
+    try {
+      await fetch(`http://localhost:8000/api/post/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      toast.success("Successfully delete post");
+      window.location.reload();
+    } catch (error) {
+      toast.error("Error deleting post", { description: error });
+    }
   };
 
   return (
@@ -125,7 +140,10 @@ const Post = ({ id, username, title, date, content, likes, tags }) => {
           {date.toLocaleDateString()}
         </span>
         {isPost && (
-          <button className="gap-0.5 rounded bg-red-500 px-2 py-1 text-center text-xs text-white">
+          <button
+            className="gap-0.5 rounded bg-red-500 px-2 py-1 text-center text-xs text-white"
+            onClick={deletePostHandler}
+          >
             Delete
           </button>
         )}
