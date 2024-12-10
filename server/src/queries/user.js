@@ -1,9 +1,9 @@
 import User from '../models/user.js';
 import logger from '../utils/logger.js';
 
-export const createUser = async ({ username, password }) => {
+export const createUser = async ({ username, password, salt }) => {
   try {
-    const newUser = await User.create({ username, password });
+    const newUser = await User.create({ username, password, salt });
 
     return newUser;
   } catch (error) {

@@ -1,4 +1,4 @@
-import * as bcrypt from 'bcrypt';
+import * as passjen from 'passjen';
 
 import { createUser, getUserByUsername } from '../queries/user.js';
 import { generateToken } from '../utils/jwt.js';
@@ -14,9 +14,13 @@ export const signup = async (req, res) => {
   }
 
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const { hashedPassword, salt } = await passjen.Hasher.hash(password, 10);
 
-    const newUser = await createUser({ username, password: hashedPassword });
+    const newUser = await createUser({
+      username,
+      password: hashedPassword,
+      salt,
+    });
 
     const token = generateToken(newUser.username);
 
@@ -51,9 +55,14 @@ export const signin = async (req, res) => {
 
   try {
     const user = await getUserByUsername(username);
-    const hashedPassword = user.password;
+    const { password: hashedPassword, salt } = user;
 
-    const isValidPassword = await bcrypt.compare(password, hashedPassword);
+    const isValidPassword = await passjen.Hasher.compare({
+      password,
+      hashedPassword,
+      salt,
+      saltRounds: 10,
+    });
 
     if (!isValidPassword) {
       return res
