@@ -23,5 +23,6 @@ module.exports = {
     'import/extensions': ['error', 'always', { ignorePackages: true }],
     'object-curly-newline': 'off',
     'operator-linebreak': 'off',
+    'import/no-extraneous-dependencies': 'off',
   },
 };
