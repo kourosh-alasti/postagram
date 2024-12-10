@@ -7,6 +7,7 @@ import {
   checkIfFollowing,
 } from '../queries/user.js';
 import getCookie from '../utils/cookie.js';
+import logger from '../utils/logger.js';
 
 export const getUser = async (req, res) => {
   const { username } = req.params;
@@ -28,8 +29,7 @@ export const getUser = async (req, res) => {
 
     return res.status(200).json({ user: rest });
   } catch (error) {
-    console.error('Something went wrong while fetching user');
-    console.error(error);
+    logger.error('Something went wrong while fetching user');
 
     return res.status(500).json({
       error: { message: 'Something went wrong. Please try again later.' },
@@ -54,8 +54,7 @@ export const getSelf = async (req, res) => {
 
     return res.status(200).json({ user });
   } catch (error) {
-    console.error('Unexpected error while trying to fetch your information');
-    console.error(error);
+    logger.error('Unexpected error while trying to fetch your information');
     return res.status(500).json({
       error: {
         message:
@@ -71,8 +70,7 @@ export const getAllUsers = async (req, res) => {
 
     return res.status(200).json({ users });
   } catch (error) {
-    console.error('Something went wrong while fetching users');
-    console.error(error);
+    logger.error('Something went wrong while fetching users');
 
     return res.status(500).json({
       error: { message: 'Something went wrong. Please try again later.' },
@@ -107,8 +105,7 @@ export const getMyFollowing = async (req, res) => {
 
     return res.status(200).json({ following });
   } catch (error) {
-    console.error('Something went wrong while fetching following');
-    console.error(error);
+    logger.error('Something went wrong while fetching following');
     return res.status(500).json({
       error: { message: 'Something went wrong. Please try again later.' },
     });
@@ -137,12 +134,11 @@ export const createNewFollow = async (req, res) => {
     }
 
     const user = await addFollow({ username, toFollow });
-    console.log('Successfully Followed');
+    logger.log('Successfully Followed');
 
     return res.status(200).json(user);
   } catch (error) {
-    console.error('Something went wrong while following');
-    console.error(error);
+    logger.error('Something went wrong while following');
 
     return res.status(500).json({
       error: { message: 'Something went wrong. Please try again later.' },
@@ -167,8 +163,7 @@ export const removeNewFollow = async (req, res) => {
 
     return res.status(200).json(user);
   } catch (error) {
-    console.error('Something went wrong while unfollowing');
-    console.error(error);
+    logger.error('Something went wrong while unfollowing');
 
     return res.status(500).json({
       error: { message: 'Something went wrong. Please try again later.' },

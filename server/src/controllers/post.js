@@ -7,6 +7,7 @@ import {
   deletePostById,
 } from '../queries/post.js';
 import getCookie from '../utils/cookie.js';
+import logger from '../utils/logger.js';
 
 export const createNewPost = async (req, res) => {
   const { title, content, tag } = req.body;
@@ -41,8 +42,7 @@ export const createNewPost = async (req, res) => {
 
     return res.status(200).json({ message: 'Successfully created your post' });
   } catch (error) {
-    console.error('Error creating new post');
-    console.error(error);
+    logger.error('Error creating new post');
     return res.status(500).json({
       error: {
         message:
@@ -73,8 +73,7 @@ export const getFeedPosts = async (req, res) => {
 
     return res.status(200).json({ posts: feedPosts });
   } catch (error) {
-    console.error('Error occured while getting Feed');
-    console.error(error);
+    logger.error('Error occured while getting Feed');
     return res.status(500).json({
       error: {
         message:
@@ -114,8 +113,7 @@ export const updateLikes = async (req, res) => {
 
     return res.status(200).json({ message: 'Updated like successfully' });
   } catch (error) {
-    console.error('Unexpected error occured while updated post like count');
-    console.error(error);
+    logger.error('Unexpected error occured while updated post like count');
     return res.status(500).json({
       error: {
         message:
@@ -137,8 +135,7 @@ export const getPostsBySearch = async (req, res) => {
 
     return res.status(200).json({ results });
   } catch (error) {
-    console.error('Error occured while searching for posts');
-    console.error(error);
+    logger.error('Error occured while searching for posts');
     return res.status(500).json({
       error: { message: 'An error occured while searching for posts' },
     });
@@ -164,8 +161,7 @@ export const getSelfPosts = async (req, res) => {
 
     return res.status(200).json({ posts });
   } catch (error) {
-    console.error('Unexpected error occured while trying to fetch your posts');
-    console.error(error);
+    logger.error('Unexpected error occured while trying to fetch your posts');
     return res.status(500).json({
       error: {
         message:
@@ -187,8 +183,7 @@ export const getUserPostsByUsername = async (req, res) => {
 
     return res.status(200).json({ posts });
   } catch (error) {
-    console.error('Unexpected error occured while trying to fetch your posts');
-    console.error(error);
+    logger.error('Unexpected error occured while trying to fetch your posts');
     return res.status(500).json({
       error: {
         message:
@@ -210,8 +205,7 @@ export const deleteUserPostById = async (req, res) => {
 
     return res.status(200).json({ message: 'Successfully delete Post' });
   } catch (error) {
-    console.error('Unexpected error occured while trying to delete your post');
-    console.error(error);
+    logger.error('Unexpected error occured while trying to delete your post');
     return res.status(500).json({
       error: {
         message:

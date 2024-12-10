@@ -2,6 +2,7 @@ import * as bcrypt from 'bcrypt';
 
 import { createUser, getUserByUsername } from '../queries/user.js';
 import { generateToken } from '../utils/jwt.js';
+import logger from '../utils/logger.js';
 
 export const signup = async (req, res) => {
   const { username, password } = req.body;
@@ -16,7 +17,6 @@ export const signup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await createUser({ username, password: hashedPassword });
-    // console.debug(newUser);
 
     const token = generateToken(newUser.username);
 
@@ -32,8 +32,7 @@ export const signup = async (req, res) => {
       .cookie('username', username)
       .json({ message: 'User created successfully' });
   } catch (error) {
-    console.error('Something went wrong during signup');
-    console.error(error);
+    logger.error('Something went wrong during signup');
 
     return res.status(500).json({
       error: { message: 'Something went wrong. Please try again later.' },
@@ -75,8 +74,7 @@ export const signin = async (req, res) => {
       .cookie('username', username)
       .json({ message: 'User signed in successfully' });
   } catch (error) {
-    console.error('Something went wrong during signin');
-    console.error(error);
+    logger.error('Something went wrong during signin');
 
     return res.status(500).json({
       error: { message: 'Something went wrong. Please try again later.' },
@@ -85,6 +83,6 @@ export const signin = async (req, res) => {
 };
 
 export const getToken = async (req, res) => {
-  console.log('Check if authenticated');
+  logger.log('Check if authenticated');
   return res.status(200).json({ isAuthenticated: true });
 };

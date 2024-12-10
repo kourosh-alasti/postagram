@@ -1,4 +1,5 @@
 import User from '../models/user.js';
+import logger from '../utils/logger.js';
 
 export const createUser = async ({ username, password }) => {
   try {
@@ -6,8 +7,7 @@ export const createUser = async ({ username, password }) => {
 
     return newUser;
   } catch (error) {
-    console.error('Error occured while creating new user');
-    console.error(error);
+    logger.error('Error occured while creating new user');
     throw new Error(error);
   }
 };
@@ -17,8 +17,7 @@ export const getUserByUsername = async (username) => {
     const fetchedUser = await User.findOne({ username });
     return fetchedUser;
   } catch (error) {
-    console.error('Error while getting user');
-    console.error(error);
+    logger.error('Error while getting user');
     throw Error(error);
   }
 };
@@ -29,8 +28,7 @@ export const getUsers = async (limitBy = 10, offsetBy = 0) => {
 
     return users;
   } catch (error) {
-    console.error('Error while getting users');
-    console.error(error);
+    logger.error('Error while getting users');
     throw Error(error);
   }
 };
@@ -46,8 +44,7 @@ export const addFollow = async ({ username, toFollow }) => {
 
     return fetchedUser;
   } catch (error) {
-    console.error(`Error while following ${toFollow}`);
-    console.error(error);
+    logger.error(`Error while following ${toFollow}`);
     throw new Error(error);
   }
 };
@@ -60,8 +57,7 @@ export const getFollowing = async ({ username }) => {
 
     return following;
   } catch (error) {
-    console.error('Error while getting following');
-    console.error(error);
+    logger.error('Error while getting following');
     throw new Error(error);
   }
 };
@@ -75,8 +71,7 @@ export const removeFollow = async ({ username, toUnfollow }) => {
 
     return fetchedUser;
   } catch (error) {
-    console.error(`Error while unfollowing ${toUnfollow}`);
-    console.error(error);
+    logger.error(`Error while unfollowing ${toUnfollow}`);
     throw new Error(error);
   }
 };
@@ -85,8 +80,7 @@ export const deleteAllUsers = async () => {
   try {
     await User.deleteMany({});
   } catch (error) {
-    console.error('Error Deleting Users');
-    console.error(error);
+    logger.error('Error Deleting Users');
     throw new Error(error);
   }
 };
@@ -104,8 +98,7 @@ export const checkIfFollowing = async ({ username, toFollow }) => {
 
     return false;
   } catch (error) {
-    console.error('Error while checking if user is following');
-    console.error(error);
+    logger.error('Error while checking if user is following');
     throw new Error(error);
   }
 };

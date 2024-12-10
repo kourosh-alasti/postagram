@@ -1,5 +1,6 @@
 import Post from '../models/post.js';
 import User from '../models/user.js';
+import logger from '../utils/logger.js';
 
 export const createPost = async ({ title, content, username, tags }) => {
   try {
@@ -30,8 +31,7 @@ export const getPostsByUsername = async ({
 
     return fetchedPosts;
   } catch (error) {
-    console.error('Error finding posts by username');
-    console.error(error);
+    logger.error('Error finding posts by username');
     throw new Error(error);
   }
 };
@@ -44,8 +44,7 @@ export const getPostsByTag = async ({ tag, limit = 10, offset = 0 }) => {
 
     return fetchedPosts;
   } catch (error) {
-    console.error('Error finding posts by Tag');
-    console.error(error);
+    logger.error('Error finding posts by Tag');
     throw new Error(error);
   }
 };
@@ -70,8 +69,7 @@ export const getPostsForFeed = async ({ username, limit = 10, offset = 0 }) => {
 
     return fetchedPosts;
   } catch (error) {
-    console.error('Error occured finding Posts for feed');
-    console.error(error);
+    logger.error('Error occured finding Posts for feed');
     throw new Error(error);
   }
 };
@@ -89,8 +87,7 @@ export const updateLike = async ({ id, val, username }) => {
 
     return updated;
   } catch (error) {
-    console.error('Error occured while updating likes');
-    console.error(error);
+    logger.error('Error occured while updating likes');
     throw new Error(error);
   }
 };
@@ -107,8 +104,7 @@ export const getPostsBySearchString = async ({ searchString }) => {
 
     return results;
   } catch (error) {
-    console.error('Error occurred while searching for posts.');
-    console.error(error);
+    logger.error('Error occurred while searching for posts.');
     throw new Error(error);
   }
 };
@@ -123,8 +119,7 @@ export const deletePostById = async (id) => {
       { new: true },
     );
   } catch (error) {
-    console.error(`Error occured while deleting post: ${id}`);
-    console.error(error);
+    logger.error(`Error occured while deleting post: ${id}`);
     throw new Error(error);
   }
 };
@@ -134,8 +129,7 @@ export const deleteAllPosts = async () => {
     const res = await Post.deleteMany({});
     return res;
   } catch (error) {
-    console.error('Error while deleting all posts');
-    console.error(error);
+    logger.error('Error while deleting all posts');
     throw new Error(error);
   }
 };
