@@ -12,15 +12,17 @@ import validateUser from '../middlewares/validateUser.js';
 
 const router = Router();
 
-router.post('/', validateUser, createNewPost);
-router.get('/', validateUser, getFeedPosts);
+// api/post/
 router.put('/', validateUser, updateLikes);
+router.get('/', validateUser, getFeedPosts);
+router.post('/', validateUser, createNewPost);
+// api/post/self
 router.get('/self', validateUser, getSelfPosts);
+// api/post/search
 router.get('/search', validateUser, getPostsBySearch);
+// api/post/u/:username
 router.get('/u/:username', validateUser, getUserPostsByUsername);
+// api/post/:id
 router.delete('/:id', validateUser, deleteUserPostById);
-// router.get('/tags/:tag');
-// router.get('/:postId');
-// router.put('/:postId');
 
 export default router;
