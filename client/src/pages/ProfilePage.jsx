@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import StickyWrapper from "../components/wrappers/StickyWrapper";
 import FeedWrapper from "../components/wrappers/FeedWrapper";
 import ProfileFeedSection from "../components/profile/ProfileFeedSection";
 import { toast } from "sonner";
-import { Link, Navigate } from "react-router-dom";
 import { ArrowUpIcon, Loader2Icon } from "lucide-react";
 
 const ProfilePage = () => {
@@ -22,8 +21,6 @@ const ProfilePage = () => {
       });
 
       const data = await response.json();
-
-      console.log(data);
 
       if (data.error) {
         return toast.error(data.error.message);

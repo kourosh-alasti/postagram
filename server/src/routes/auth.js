@@ -10,6 +10,6 @@ router.post('/sign-in', loggerMiddleware, signin);
 // api/auth/sign-up
 router.post('/sign-up', loggerMiddleware, signup);
 // api/auth/token
-router.get('/token', validateUser, getToken);
+router.get('/token', loggerMiddleware, validateUser, getToken);
 
 export default router;

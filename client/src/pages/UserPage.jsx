@@ -52,7 +52,6 @@ const UserPage = () => {
       });
 
       const data = await response.json();
-      console.log(data);
 
       if (data.error) {
         return toast.error(data.error.message);

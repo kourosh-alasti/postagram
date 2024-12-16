@@ -13,7 +13,6 @@ import logger from './utils/logger.js';
 
 const PORT = process.env.NODE_PORT || 8000;
 const CONN_STR = process.env.MONGO_CONN_STRING || undefined;
-const COOKIE_SECRET = process.env.COOKIE_SECRET || undefined;
 const JWT_SECRET = process.env.JWT_SECRET || undefined;
 
 const CORS_CFG = {
@@ -21,16 +20,12 @@ const CORS_CFG = {
     'http://localhost:5173',
     `http://localhost:${PORT}`,
     'http://localhost:3000',
+    '*',
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 };
-
-if (COOKIE_SECRET === undefined) {
-  logger.error('Cookie Secret is not defined');
-  process.exit(1);
-}
 
 if (JWT_SECRET === undefined) {
   logger.error('JWT Secret is not defined');
@@ -41,7 +36,7 @@ const app = express();
 
 app.use(cors(CORS_CFG));
 app.use(express.json());
-app.use(cookieParser(COOKIE_SECRET));
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 

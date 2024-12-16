@@ -13,7 +13,7 @@ if (JWT_SECRET === undefined) {
   process.exit(1);
 }
 
-export const generateToken = ({ username }) => {
+export const generateToken = (username) => {
   // create token from username
   const token = jwt.sign({ data: username }, JWT_SECRET, {
     expiresIn: JWT_EXPIRATION,
@@ -23,13 +23,16 @@ export const generateToken = ({ username }) => {
   return token;
 };
 
-export const verifyToken = ({ token }) => {
+export const verifyToken = (token) => {
   // verifiy token
-  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+  const data = jwt.verify(token, JWT_SECRET, (err, decoded) => {
     if (err) {
       logger.error('Failed to verify JWT Token');
       return undefined;
     }
-    return decoded;
+
+    return decoded.data;
   });
+
+  return data;
 };

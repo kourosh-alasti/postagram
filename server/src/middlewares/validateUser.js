@@ -32,7 +32,7 @@ const validateUser = async (req, res, next) => {
   const token = fullToken.split('=')[1];
 
   // verify token
-  const verified = verifyToken({ token });
+  const verified = verifyToken(token);
 
   // if token expired
   if (verified === undefined) {
