@@ -11,9 +11,10 @@ import userRoutes from './routes/user.js';
 import postRoutes from './routes/post.js';
 import logger from './utils/logger.js';
 
-const PORT = process.env.NODE_PORT || 3000;
+const PORT = process.env.NODE_PORT || 8000;
 const CONN_STR = process.env.MONGO_CONN_STRING || undefined;
 const COOKIE_SECRET = process.env.COOKIE_SECRET || undefined;
+const JWT_SECRET = process.env.JWT_SECRET || undefined;
 
 const CORS_CFG = {
   origin: [
@@ -27,7 +28,13 @@ const CORS_CFG = {
 };
 
 if (COOKIE_SECRET === undefined) {
-  throw Error('Cookie Secret is not defined');
+  logger.error('Cookie Secret is not defined');
+  process.exit(1);
+}
+
+if (JWT_SECRET === undefined) {
+  logger.error('JWT Secret is not defined');
+  process.exit(1);
 }
 
 const app = express();
@@ -44,7 +51,8 @@ app.use('/api/post', postRoutes);
 
 const initDatabaseConnection = async () => {
   if (CONN_STR === undefined) {
-    throw Error('Undefined Connection URL');
+    logger.error('Undefined Connection URL');
+    process.exit(1);
   }
 
   await mongoose.connect(CONN_STR);
