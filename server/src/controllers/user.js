@@ -132,7 +132,7 @@ export const getMyFollowing = async (req, res) => {
     );
 
     // return following and throw 200 code
-    return res.status(200).json({ following });
+    return res.status(200).json({ following: [...following] });
   } catch (error) {
     logger.error('Something went wrong while fetching following');
 

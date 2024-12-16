@@ -10,6 +10,8 @@ const ProfilePage = () => {
   const [date, setDate] = useState();
   const [posts, setPosts] = useState([]);
 
+  console.log(posts);
+
   useEffect(() => {
     const getUserInfo = async () => {
       const response = await fetch("http://localhost:8000/api/user/self", {
