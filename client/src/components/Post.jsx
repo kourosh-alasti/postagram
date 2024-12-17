@@ -42,7 +42,7 @@ const Post = ({ id, username, title, date, content, likes, tags }) => {
   };
 
   const updateLike = async ({ id, increment }) => {
-    const response = await fetch("http://localhost:8000/api/post/", {
+    const response = await fetch(`${import.meta.env.API_ENDPOINT}/api/post/`, {
       method: "PUT",
       credentials: "include",
       headers: {
@@ -66,7 +66,7 @@ const Post = ({ id, username, title, date, content, likes, tags }) => {
 
   const deletePostHandler = async () => {
     try {
-      await fetch(`http://localhost:8000/api/post/${id}`, {
+      await fetch(`${import.meta.env.API_ENDPOINT}/api/post/${id}`, {
         method: "DELETE",
         credentials: "include",
         headers: {

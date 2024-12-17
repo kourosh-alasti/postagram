@@ -16,17 +16,20 @@ const SignUp = () => {
       );
     }
 
-    const response = await fetch("http://localhost:8000/api/auth/sign-up", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await fetch(
+      "${import.meta.env.API_ENDPOINT}/api/auth/sign-up",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
       },
-      credentials: "include",
-      body: JSON.stringify({
-        username: username,
-        password: password,
-      }),
-    });
+    );
 
     const data = await response.json();
 

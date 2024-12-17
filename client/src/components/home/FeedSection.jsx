@@ -7,13 +7,16 @@ const FeedSection = () => {
 
   useEffect(() => {
     const getPostsForFeed = async () => {
-      const response = await fetch("http://localhost:8000/api/post/", {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${import.meta.env.API_ENDPOINT}/api/post/`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
-      });
+      );
 
       const data = await response.json();
 

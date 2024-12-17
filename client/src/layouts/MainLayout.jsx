@@ -8,13 +8,16 @@ const MainLayout = () => {
 
   useEffect(() => {
     const handleAuth = async () => {
-      const response = await fetch("http://localhost:8000/api/auth/token", {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        "${import.meta.env.API_ENDPOINT}/api/auth/token",
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
-      });
+      );
 
       const body = await response.json();
       setAuth(body.isAuthenticated);

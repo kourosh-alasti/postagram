@@ -12,7 +12,7 @@ const ProfileFeedSection = (props) => {
   useEffect(() => {
     const getPostsForFeed = async () => {
       const response = await fetch(
-        `http://localhost:8000/api/post/${isSelf ? "self" : `u/${props.username}`}`,
+        `${import.meta.env.API_ENDPOINT}/api/post/${isSelf ? "self" : `u/${props.username}`}`,
         {
           method: "GET",
           credentials: "include",

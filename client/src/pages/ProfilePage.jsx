@@ -14,13 +14,16 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const getUserInfo = async () => {
-      const response = await fetch("http://localhost:8000/api/user/self", {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        "${import.meta.env.API_ENDPOINT}/api/user/self",
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
-      });
+      );
 
       const data = await response.json();
 
@@ -35,13 +38,16 @@ const ProfilePage = () => {
     };
 
     const getUserPosts = async () => {
-      const response = await fetch("http://localhost:8000/api/post/self", {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        "${import.meta.env.API_ENDPOINT}/api/post/self",
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
-      });
+      );
 
       const data = await response.json();
 

@@ -16,18 +16,21 @@ const CreatePostSection = () => {
     }
 
     const createPost = async () => {
-      const response = await fetch("http://localhost:8000/api/post/", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${import.meta.env.API_ENDPOINT}/api/post/`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title: postTitle,
+            content: postContent,
+            tag: postTag || "",
+          }),
         },
-        body: JSON.stringify({
-          title: postTitle,
-          content: postContent,
-          tag: postTag || "",
-        }),
-      });
+      );
 
       const data = await response.json();
 

@@ -20,7 +20,7 @@ const UserPage = () => {
   useEffect(() => {
     const getUserInfo = async () => {
       const response = await fetch(
-        `http://localhost:8000/api/user/u/${username}`,
+        `${import.meta.env.API_ENDPOINT}/api/user/u/${username}`,
         {
           method: "GET",
           credentials: "include",
@@ -43,13 +43,16 @@ const UserPage = () => {
     };
 
     const getMyFollowingInfo = async () => {
-      const response = await fetch(`http://localhost:8000/api/user/following`, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${import.meta.env.API_ENDPOINT}/api/user/following`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
-      });
+      );
 
       const data = await response.json();
 
@@ -72,7 +75,7 @@ const UserPage = () => {
 
     try {
       await fetch(
-        `http://localhost:8000/api/user/${shouldUnfollow ? "unfollow" : "follow"}/${username}`,
+        `${import.meta.env.API_ENDPOINT}/api/user/${shouldUnfollow ? "unfollow" : "follow"}/${username}`,
         {
           method: "PUT",
           credentials: "include",
