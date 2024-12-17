@@ -9,7 +9,7 @@ const FollowingSection = () => {
   useEffect(() => {
     const getFriends = async () => {
       const response = await fetch(
-        `${import.meta.env.API_ENDPOINT}/api/user/following`,
+        `${import.meta.env.VITE_API_ENDPOINT}/api/user/following`,
         {
           method: "GET",
           credentials: "include",

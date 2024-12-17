@@ -9,7 +9,7 @@ const SearchPage = () => {
 
   const fetchResults = debounce(async (text) => {
     const response = await fetch(
-      `${import.meta.env.API_ENDPOINT}/api/post/search?string=${text}`,
+      `${import.meta.env.VITE_API_ENDPOINT}/api/post/search?string=${text}`,
       {
         method: "GET",
         credentials: "include",

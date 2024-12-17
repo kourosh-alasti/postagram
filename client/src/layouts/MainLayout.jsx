@@ -9,7 +9,7 @@ const MainLayout = () => {
   useEffect(() => {
     const handleAuth = async () => {
       const response = await fetch(
-        `${import.meta.env.API_ENDPOINT}/api/auth/token`,
+        `${import.meta.env.VITE_API_ENDPOINT}/api/auth/token`,
         {
           method: "GET",
           credentials: "include",

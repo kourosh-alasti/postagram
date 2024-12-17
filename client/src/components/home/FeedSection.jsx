@@ -8,7 +8,7 @@ const FeedSection = () => {
   useEffect(() => {
     const getPostsForFeed = async () => {
       const response = await fetch(
-        `${import.meta.env.API_ENDPOINT}/api/post/`,
+        `${import.meta.env.VITE_API_ENDPOINT}/api/post/`,
         {
           method: "GET",
           credentials: "include",

@@ -15,7 +15,7 @@ const ProfilePage = () => {
   useEffect(() => {
     const getUserInfo = async () => {
       const response = await fetch(
-        `${import.meta.env.API_ENDPOINT}/api/user/self`,
+        `${import.meta.env.VITE_API_ENDPOINT}/api/user/self`,
         {
           method: "GET",
           credentials: "include",
@@ -39,7 +39,7 @@ const ProfilePage = () => {
 
     const getUserPosts = async () => {
       const response = await fetch(
-        `${import.meta.env.API_ENDPOINT}/api/post/self`,
+        `${import.meta.env.VITE_API_ENDPOINT}/api/post/self`,
         {
           method: "GET",
           credentials: "include",

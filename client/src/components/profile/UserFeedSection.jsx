@@ -8,7 +8,7 @@ const ProfileFeedSection = () => {
   useEffect(() => {
     const getPostsForFeed = async () => {
       const response = await fetch(
-        `${import.meta.env.API_ENDPOINT}/api/post/self`,
+        `${import.meta.env.VITE_API_ENDPOINT}/api/post/self`,
         {
           method: "GET",
           credentials: "include",
