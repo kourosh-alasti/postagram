@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
 
 const MainLayout = () => {
-  const [auth, setAuth] = useState(true);
+  const [auth, setAuth] = useState(false);
 
   useEffect(() => {
     const handleAuth = async () => {
