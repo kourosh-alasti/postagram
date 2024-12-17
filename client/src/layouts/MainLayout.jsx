@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 const MainLayout = () => {
   const { state } = useLocation();
-  const { isAuth } = state;
+  const { isAuth = null } = state;
 
   const isAuthenticated = isAuth || false;
 
