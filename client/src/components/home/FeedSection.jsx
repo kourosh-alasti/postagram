@@ -26,9 +26,8 @@ const FeedSection = () => {
       }
 
       setPosts(data.posts);
-      if (data.posts && data.posts.length > 0) {
-        toast.info("Feed loaded");
-      }
+
+      return toast.info("Feed loaded");
     };
 
     getPostsForFeed();
