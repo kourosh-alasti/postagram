@@ -17,7 +17,7 @@ const SignUp = () => {
     }
 
     const response = await fetch(
-      "${import.meta.env.API_ENDPOINT}/api/auth/sign-up",
+      `${import.meta.env.API_ENDPOINT}/api/auth/sign-up`,
       {
         method: "POST",
         headers: {
