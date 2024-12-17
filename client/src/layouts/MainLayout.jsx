@@ -1,10 +1,15 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
 
 const MainLayout = () => {
-  const [auth, setAuth] = useState(false);
+  const { state } = useLocation();
+  const { isAuth } = state;
+
+  const isAuthenticated = isAuth || false;
+
+  const [auth, setAuth] = useState(isAuthenticated);
 
   useEffect(() => {
     const handleAuth = async () => {
@@ -26,17 +31,17 @@ const MainLayout = () => {
     handleAuth();
   }, []);
 
+  if (auth === false) {
+    return <Navigate to="/auth/sign-in" />;
+  }
+
   return (
     <>
-      {auth ? (
-        <div className="flex h-full w-full flex-col items-center gap-3 bg-slate-900 text-white">
-          <Navbar />
-          <Outlet />
-          <Footer />
-        </div>
-      ) : (
-        <Navigate to="/auth/sign-in" />
-      )}
+      <div className="flex h-full w-full flex-col items-center gap-3 bg-slate-900 text-white">
+        <Navbar />
+        <Outlet />
+        <Footer />
+      </div>
     </>
   );
 };

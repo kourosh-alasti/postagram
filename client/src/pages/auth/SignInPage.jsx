@@ -37,7 +37,7 @@ const SignIn = () => {
 
     toast.success(data.message);
 
-    navigate("/");
+    navigate("/", { state: { isAuth: true } });
   };
 
   return (
