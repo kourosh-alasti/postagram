@@ -4,10 +4,13 @@ import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
 
 const MainLayout = () => {
-  const { state } = useLocation();
-  const { isAuth = null } = state;
+  let isAuthenticated = false;
 
-  const isAuthenticated = isAuth || false;
+  const location = useLocation();
+
+  if (location.state !== null) {
+    isAuthenticated = location.state.isAuth;
+  }
 
   const [auth, setAuth] = useState(isAuthenticated);
 
